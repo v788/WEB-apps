@@ -11,8 +11,29 @@ public class EmployeeInfo implements Serializable {
 	private String hourlywage;
 	private String carfare;
 	private String sphourly;
+	private String midnight;
+	private String holiday;
+	private String overtime;
 
 
+	public String getMidnight() {
+		return midnight;
+	}
+	public void setMidnight(String midnight) {
+		this.midnight = midnight;
+	}
+	public String getHoliday() {
+		return holiday;
+	}
+	public void setHoliday(String holiday) {
+		this.holiday = holiday;
+	}
+	public String getOvertime() {
+		return overtime;
+	}
+	public void setOvertime(String overtime) {
+		this.overtime = overtime;
+	}
 	public String getSphourly() {
 		return sphourly;
 	}
