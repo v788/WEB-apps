@@ -370,7 +370,48 @@ public class DataAccessBean extends HttpServlet {
 				conn.close();
 			}
 		}
+	}
 
+	//従業員の出勤・日当記録の新規入力処理
+	public void registLaborCostInfo(LaborcostInfo laborcostInfo)
+			throws SQLException {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			String sql = "INSERT INTO labor_cost(date, name_id,hourly, attend, begin, "
+					+ "finish, rest, late, total_work,overTimeWork,fare,total_cost ) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+			conn = getDataSource().getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, laborcostInfo.getDate());
+			ps.setString(2, laborcostInfo.getName_id());
+			ps.setString(3, laborcostInfo.getHourly());
+			ps.setString(4, laborcostInfo.getAttend());
+			ps.setString(5, laborcostInfo.getBegin());
+			ps.setString(6, laborcostInfo.getFinish());
+			ps.setString(7, laborcostInfo.getRest());
+			ps.setString(8, laborcostInfo.getLate());
+			ps.setString(9, laborcostInfo.getTotal_work());
+			ps.setString(10, laborcostInfo.getOverTimeWork());
+			ps.setString(11, laborcostInfo.getFare());
+			ps.setString(12, laborcostInfo.getTotal_cost());
+
+			ps.executeUpdate();
+		} catch (NamingException e) {
+			e.printStackTrace();
+			throw new SQLException(e);
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (ps != null) {
+				ps.close();
+			}
+			if (conn != null) {
+				conn.close();
+			}
+		}
 	}
 
 

@@ -24,9 +24,12 @@
 			<th>休憩</th>
 			<th>決定</th>
 		</tr>
+
+		<%--従業員の出勤、退勤時間と各個人の時給等のデータを計算servletにpostで送信 --%>
+
 		<c:forEach var="cost" items="${employeeInfoList }">
 			<tr>
-				<form action="${pageContext.request.contextPath }/salarycalc">
+				<form action="${pageContext.request.contextPath }/salarycalc" method="post">
 					<td><input type="hidden" name="name_id" value="${ cost.no }">${ cost.no }</td>
 					<td><input type="hidden" name="name" value="${ cost.no }">${ cost.name }</td>
 					<td><input type="date" name="date" required></td>
@@ -54,6 +57,9 @@
 		</c:forEach>
 	</table>
 	<br>
+
+		<%--深夜等　時給割増情報の確認表示 --%>
+
 	<table>
 		<tr>
 			<th>深夜勤務</th>
@@ -72,6 +78,9 @@
 		</tr>
 	</table>
 	<br>
+
+	<%--出勤データ削除の為の検索ボタン(削除servletにpost送信)と今月分データの一覧表示 --%>
+
 	<br>
 	<br>今月期リスト一覧
 	<form action="${ pageContext.request.contextPath }/searchlaborcost"
