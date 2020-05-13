@@ -34,7 +34,7 @@ public class FindTodayLaborCostServlet extends HttpServlet {
 			request.setAttribute("employeeInfoList", employeeInfoList);
 			request.setAttribute("extrasettingInfoList", extrasettingInfoList);
 			request.setAttribute("laborcostInfoList", alllaborcostInfoList);
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/laborcost_regist.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/laborcost_list.jsp");
 			rd.forward(request, response);
 		} catch (SQLException e) {
 			e.printStackTrace();
