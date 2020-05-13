@@ -1,0 +1,5 @@
+<Context path="/salary">
+
+<ResourceLink name="jdbc/ssjdb" global="ssjdb" type="javax.sql.DataSource"/>
+
+</Context>
