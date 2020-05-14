@@ -242,6 +242,29 @@ public class DataAccessBean extends HttpServlet {
 		}
 	}
 
+
+	//従業員の出勤・日当記録の削除処理
+	public void deleteLaborCostInfo(String id) throws SQLException {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try {
+			String sql = "DELETE FROM labor_cost WHERE id = ?";
+			conn = getDataSource().getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			ps.executeUpdate();
+		} catch (NamingException e) {
+			e.printStackTrace();
+			throw new SQLException(e);
+		} finally {
+			if (ps != null) {
+				ps.close();
+			}
+			if (conn != null) {
+				conn.close();
+			}
+		}
+	}
 	//従業員の出勤・時給入力フォーム表示処理
 	public Collection<EmployeeInfo> findallLaborCostInfo() throws SQLException {
 
@@ -414,5 +437,97 @@ public class DataAccessBean extends HttpServlet {
 		}
 	}
 
+
+	//検索用従業員出勤リスト表示オブジェクト
+		public Collection<LaborcostInfo> searchLaborCostInfo(LaborcostInfo laborcostInfo) throws SQLException {
+
+			Connection conn = null;
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+
+			try {
+				String sql = "SELECT cost.id, cost.date, employee.name, cost.hourly, cost.attend, cost.begin, cost.finish, "
+						+ "cost.rest, cost.late, cost.total_work,cost.OverTimeWork, cost.fare, cost.total_cost "
+						+ "FROM labor_cost as cost INNER JOIN employee ON cost.name_id = employee.id WHERE cost.date like ? "
+						+ "AND cost.name_id = ? ORDER BY cost.date DESC";
+				Collection<LaborcostInfo> alllaborcostInfoList = new ArrayList<LaborcostInfo>();
+				conn = getDataSource().getConnection();
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, "%" + laborcostInfo.getDate() + "%");
+				ps.setString(2, laborcostInfo.getName_id());
+				rs = ps.executeQuery();
+
+				while (rs.next()) {
+					LaborcostInfo slaborcostInfo = new LaborcostInfo();
+					slaborcostInfo.setId(rs.getString("id"));
+					slaborcostInfo.setDate(rs.getString("date"));
+					slaborcostInfo.setName(rs.getString("name"));
+					slaborcostInfo.setHourly(rs.getString("hourly"));
+					slaborcostInfo.setBegin(rs.getString("begin"));
+					slaborcostInfo.setFinish(rs.getString("finish"));
+					slaborcostInfo.setRest(rs.getString("rest"));
+					slaborcostInfo.setLate(rs.getString("late"));
+					slaborcostInfo.setTotal_work(rs.getString("total_work"));
+					slaborcostInfo.setOverTimeWork(rs.getString("OverTimeWork"));
+					slaborcostInfo.setFare(rs.getString("fare"));
+					slaborcostInfo.setTotal_cost(rs.getString("total_cost"));
+					slaborcostInfo.setAttend(rs.getString("attend"));
+
+					alllaborcostInfoList.add(slaborcostInfo);
+				}
+				return alllaborcostInfoList;
+			} catch (NamingException e) {
+				e.printStackTrace();
+				throw new SQLException(e);
+			} finally {
+				if (rs != null) {
+					rs.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			}
+
+		}
+
+
+		//個人別当月間人件費表示オブジェクト
+		public int personalMonthLaborCostInfo(String search_name) throws SQLException {
+
+			Connection conn = null;
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			int thisMomth;
+			try {
+				String sql = "SELECT SUM(total_cost) FROM labor_cost "
+						+ "WHERE DATE_FORMAT(date, '%Y%m') = DATE_FORMAT(NOW(), '%Y%m') AND name_id = ?";
+				//ArrayList totalList = new ArrayList();
+				conn = getDataSource().getConnection();
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, search_name);
+				rs = ps.executeQuery();
+				rs.next();
+				thisMomth = rs.getInt("SUM(total_cost)");
+
+				return thisMomth;
+			} catch (NamingException e) {
+				e.printStackTrace();
+				throw new SQLException(e);
+			} finally {
+				if (rs != null) {
+					rs.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			}
+
+		}
 
 }

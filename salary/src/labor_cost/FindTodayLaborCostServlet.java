@@ -25,16 +25,17 @@ public class FindTodayLaborCostServlet extends HttpServlet {
 		try {
 			DataAccessBean dab = new DataAccessBean();
 			//laborcost_list(従業員出退勤入力画面)へBeanから一覧等リストオブジェクトを取得、送信
-			
-			//今月の給料総支払額のリストオブジェクト			
+
+			//今月の給料総支払額検索結果のリストオブジェクト
 			int thisMonthCost = dab.thisMonthLaborCostInfo();
-			
+
+			//従業員の個人情報リストオブジェクト
 			Collection<EmployeeInfo> employeeInfoList = dab.findallLaborCostInfo();
-			
+
 			//時給割増情報のリストオブジェクト
 			Collection<ExtrasettingInfo> extrasettingInfoList = dab.extrasettingInfo();
-			
-			//
+
+			//今月の従業員の出勤履リストオブジェクト
 			Collection<LaborcostInfo> alllaborcostInfoList = dab.attendanceList();
 
 			request.setAttribute("thisMonthCost", thisMonthCost);
