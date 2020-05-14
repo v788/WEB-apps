@@ -15,7 +15,7 @@ import salary.bean.DataAccessBean;
 import salary.bean.EmployeeInfo;
 import salary.bean.ExtrasettingInfo;
 @SuppressWarnings("serial")
-@WebServlet(name = "ControlRegist.jspServlet", urlPatterns = { "/controlregist.jsp" })
+@WebServlet(name = "ControlRegist.jspServlet", urlPatterns = { "/controlregist" })
 public class ControlRegistServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -33,13 +33,5 @@ public class ControlRegistServlet extends HttpServlet {
 			e.printStackTrace();
 			request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request, response);
 		}
-
 	}
-
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
 }

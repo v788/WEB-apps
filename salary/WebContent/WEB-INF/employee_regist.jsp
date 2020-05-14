@@ -9,6 +9,7 @@
 <title>従業員登録</title>
 </head>
 <body>
+<jsp:include page="/WEB-INF/header.jsp"/>
 	<pre>
 		<a href="${pageContext.request.contextPath }/employeefindall">一覧へ</a>
 	</pre>

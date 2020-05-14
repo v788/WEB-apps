@@ -7,6 +7,7 @@
 <title>従業員一覧</title>
 </head>
 <body>
+<jsp:include page="/WEB-INF/header.jsp"/>
 	<pre><a href="${pageContext.request.contextPath }/controlregist.jsp">登録・修正フォーム</a></pre>
 	<br>
 	<h4>パート・アルバイト一覧</h4>

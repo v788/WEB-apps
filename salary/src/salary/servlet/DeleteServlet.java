@@ -21,7 +21,7 @@ public class DeleteServlet extends HttpServlet {
 
 			DataAccessBean dab = new DataAccessBean();
 			dab.deleteEmployeeInfo(id);
-			response.sendRedirect(request.getContextPath() + "/controlregist.jsp");
+			response.sendRedirect(request.getContextPath() + "/controlregist");
 				}catch(SQLException e) {
 			e.printStackTrace();
 			request.getRequestDispatcher("WEB-INF/error.jsp").forward(request, response);

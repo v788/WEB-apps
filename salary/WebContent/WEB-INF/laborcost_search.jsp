@@ -10,9 +10,8 @@
 <body>
 	<br>
 	<h4>人件費検索結果</h4>
-	<a
-		href="${ pageContext.request.contextPath }
-										/findtodaylaborcost">人件費入力フォームへ</a>
+	<a href="${ pageContext.request.contextPath }
+						/findtodaylaborcost">人件費入力フォームへ</a>
 	<br>
 	<br>
 

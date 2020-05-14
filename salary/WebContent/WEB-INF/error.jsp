@@ -7,6 +7,7 @@
 <title>エラー</title>
 </head>
 <body>
+<jsp:include page="/WEB-INF/header.jsp"/>
 エラーが発生しました
 </body>
 </html>

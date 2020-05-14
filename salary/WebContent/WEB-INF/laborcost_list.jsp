@@ -9,6 +9,7 @@
 <title>人件費管理コンソール</title>
 </head>
 <body>
+<jsp:include page="/WEB-INF/header.jsp"/>
 	<br>	<h4>人件費入力フォーム</h4>
 	<h4>今月の総人件費  ${thisMonthCost} 円</h4>
 	<br>※休憩時間は通常勤務時間から優先して控除します
