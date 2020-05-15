@@ -36,9 +36,10 @@ text-decoration:none;
 </head>
 <body>
 <div>Easy <span class="check">Check</span> The Cost</div>
+<table width="100"></table>
 <ul id="nav">
 		<li><a href="${ pageContext.request.contextPath }/findtodaylaborcost">HOME</a></li>
-		<li><a href="${ pageContext.request.contextPath }/employeefindall">従業員一覧</a></li>
+		<li><a href="${ pageContext.request.contextPath }/employeefindall">アルバイトさん一覧</a></li>
 		<li><a href="${ pageContext.request.contextPath }/controlregist">従業員登録・割増設定</a></li>
 		<li><a href="${ pageContext.request.contextPath }/">説明書</a></li>
 	</ul>

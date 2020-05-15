@@ -4,13 +4,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>従業員一覧</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP');
+#employee{
+display: flex;
+  justify-content: space-around;
+
+}
+
+#employee > div{
+ width: 45%;
+}
+
+table{
+border: 1px solid;
+  width: 100%;
+    font-size: 80%;
+    font-family: 'Noto Sans JP', sans-serif;
+}
+table.table2{
+border: 0;
+width: 40%;
+text-align: center;
+}
+</style>
+
+<title>アルバイトさん一覧</title>
 </head>
+
 <body>
 <jsp:include page="/WEB-INF/header.jsp"/>
-	<pre><a href="${pageContext.request.contextPath }/controlregist.jsp">登録・修正フォーム</a></pre>
+
 	<br>
-	<h4>パート・アルバイト一覧</h4>
+	<div id="employee">
+	<div>
+	<h6>アルバイトさん一覧</h6>
 	<table border="1">
 		<tr>
 			<th>ID</th>
@@ -30,25 +59,33 @@
 			</tr>
 		</c:forEach>
 	</table>
-	<br>
-	<br>
+</div>
 
-	<h4>割増率</h4>
-	※深夜時間帯は22:00～4:59の間で設定しています
-	<table border="1">
+<div>
+<br>
+<br>
+<h6 align="center">割増率
+<p>※深夜時間帯は22:00～4:59の間で設定しています</p></h6>
+	<table class="table2" align="center">
+	<c:forEach var="ex" items = "${extra}">
 		<tr>
-			<th>深夜勤務</th>
-			<th>休日勤務</th>
-			<th>残業勤務</th>
+			<td  height="50">深夜勤務</td>
+			<td>${ ex.midnight }%</td>
 		</tr>
-		<c:forEach var="ex" items = "${extra}">
-		<tr>
-			<td>${ ex.midnight }</td>
-			<td>${ ex.holiday }</td>
-			<td>${ ex.overtime }</td>
-		</tr>
+			<tr>
+			<td  height="50">休日勤務</td>
+			<td>${ ex.holiday }%</td>
+			</tr>
+			<tr>
+			<td  height="50">残業勤務</td>
+			<td>${ ex.overtime }%</td>
+			</tr>
+
 		</c:forEach>
 	</table>
+</div>
+
+</div>
 	<br>
 </body>
 </html>
