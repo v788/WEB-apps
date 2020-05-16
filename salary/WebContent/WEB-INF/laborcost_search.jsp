@@ -5,19 +5,59 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>人件費検索・消去コンソール</title>
+<title>履歴検索・消去コンソール</title>
+<style type="text/css">
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300&display=swap');
+h3 {
+	text-align: center;
+	margin-left: 50%;
+	color: #333333;
+	border: solid 2px #008080;
+	padding: 0em;
+	border-radius: 2em;
+}
+#span1{
+margin-left: 160px;
+color:#202020;
+size: 160%;
+font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+#table1 {
+	width: 80%;
+	margin-left: 160px;
+	background: #EEFFFF;
+	text-align: center;
+	font-family: "游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", "メイリオ",
+		"Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+	font-weight: 500;
+}
+
+#table1 td, table1 td {
+	padding: 10px 0;
+	text-align: center;
+}
+
+#table1 tr:nth-child(even) {
+	background-color: #eee
+}
+</style>
 </head>
 <body>
+	<%--ヘッダーの挿入 --%>
+	<header>
+	<jsp:include page="/WEB-INF/header.jsp" />
+	</header>
 	<br>
-	<h4>人件費検索結果</h4>
-	<a href="${ pageContext.request.contextPath }
-						/findtodaylaborcost">人件費入力フォームへ</a>
-	<br>
-	<br>
-
-	<%--検索結果から今月の個人の給与総額と削除操servletへの送信ボタンの実装 --%>>
-	<h6>削除後は元に戻せません</h6>
-	<table border="1">
+		<span id="span1">検索結果  ※削除後は元に戻せません</span>
+	<%--検索結果から今月の個人の給与総額と削除操servletへの送信ボタンの実装 --%>
+	<h3>
+	<c:forEach var="personal" items="${ personalCost }">
+		<c:out value="${ personal.name }"/>  さんの<c:out value="${ search_month }"/>月分の支給額
+		<c:out value="${ personal.total_cost }" />円
+	</c:forEach>
+	</h3>
+	<table id="table1">
 		<tr>
 			<th>管理ID</th>
 			<th>日付</th>
@@ -37,7 +77,7 @@
 			<tr>
 				<td>${ result.id }</td>
 				<td>${ result.date }</td>
-				<td>${ result.name }</td>
+				<td id="name">${ result.name }</td>
 				<td>${ result.hourly }</td>
 				<td>${ result.begin }</td>
 				<td>${ result.finish }</td>
@@ -47,13 +87,14 @@
 				<td>${ result.overTimeWork }</td>
 				<td>${ result.fare }</td>
 				<td>${ result.total_cost}</td>
-				<td><form action="${ pageContext.request.contextPath }/deletelaborcost"
-						method="post"> <input type="hidden" name="id"
-					value="${ result.id }"> <input type="submit" value="削除">
+				<td><form
+						action="${ pageContext.request.contextPath }/deletelaborcost"
+						method="post">
+						<input type="hidden" name="id" value="${ result.id }"> <input
+							type="submit" value="削除">
 					</form>
 			</tr>
 		</c:forEach>
 	</table>
-	<h4>今月支給額 ${ personalCost } 円</h4>
 </body>
 </html>

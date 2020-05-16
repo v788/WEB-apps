@@ -189,7 +189,6 @@ public class DataAccessBean extends HttpServlet {
 	}
 
 	//時給割増率の変更オブジェクト
-	//従業員データの変更更新メソッド
 	public void updateExtrasettingInfo(ExtrasettingInfo extrasettingInfo)
 			throws SQLException {
 		Connection conn = null;
@@ -494,25 +493,31 @@ public class DataAccessBean extends HttpServlet {
 		}
 
 
-		//個人別当月間人件費表示オブジェクト
-		public int personalMonthLaborCostInfo(String search_name) throws SQLException {
+		//個人別検索月間人件費表示オブジェクト
+		public Collection<LaborcostInfo> personalMonthLaborCostInfo(LaborcostInfo laborcostInfo) throws SQLException {
 
 			Connection conn = null;
 			PreparedStatement ps = null;
 			ResultSet rs = null;
-			int thisMomth;
+
 			try {
-				String sql = "SELECT SUM(total_cost) FROM labor_cost "
-						+ "WHERE DATE_FORMAT(date, '%Y%m') = DATE_FORMAT(NOW(), '%Y%m') AND name_id = ?";
-				//ArrayList totalList = new ArrayList();
+				String sql = "SELECT SUM(cost.total_cost), employee.name FROM labor_cost as cost INNER JOIN employee ON cost.name_id = employee.id  WHERE cost.date like ? AND cost.name_id = ?";
+				Collection<LaborcostInfo> alllaborcostInfoList = new ArrayList<LaborcostInfo>();
 				conn = getDataSource().getConnection();
 				ps = conn.prepareStatement(sql);
-				ps.setString(1, search_name);
+				ps.setString(1, "%" + laborcostInfo.getDate() + "%" );
+				ps.setString(2,laborcostInfo.getName_id() );
 				rs = ps.executeQuery();
-				rs.next();
-				thisMomth = rs.getInt("SUM(total_cost)");
 
-				return thisMomth;
+				while (rs.next()) {
+					LaborcostInfo slaborcostInfo = new LaborcostInfo();
+
+					slaborcostInfo.setName(rs.getString("name"));
+					slaborcostInfo.setTotal_cost(rs.getString("SUM(cost.total_cost)"));
+
+					alllaborcostInfoList.add(slaborcostInfo);
+				}
+				return alllaborcostInfoList;
 			} catch (NamingException e) {
 				e.printStackTrace();
 				throw new SQLException(e);

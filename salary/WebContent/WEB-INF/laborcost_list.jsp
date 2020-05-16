@@ -6,14 +6,127 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>人件費管理コンソール</title>
+
+<style type="text/css">
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP');
+
+body {
+	font-family: 'Noto Sans JP', sans-serif;
+}
+
+header {
+	background-color: white;
+}
+
+h4 {
+	text-align: center;
+	margin-left: 70%;
+	color: #333333;
+	border: solid 2px #008080;
+	padding: 0.5em;
+	border-radius: 2em;
+}
+
+h6 {
+	margin-left: 18%;
+	color: #999999;
+}
+
+table.table1 {
+	width: 80%;
+	font-size: 100%;
+	text-align: center;
+	margin-left: 160px;
+	border: 0;
+	background: #EEFFFF;
+	border-top: solid 6px #1dc1d6;
+	box-shadow: 0 3px 4px rgba(0, 0, 0, 0.32);
+	border-spacing: 0;
+	line-height: 2em;
+	border: 0;
+	font-family: "游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", "メイリオ",
+		"Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+	font-weight: 500;
+}
+
+table.table1 th {
+	border-bottom: solid 2px #fb5144;
+	padding: 10px 0;
+}
+
+table.table1 td {
+	border-bottom: solid 2px #ddd;
+	text-align: center;
+	padding: 10px 0;
+}
+
+.submit1 {
+	display: inline-block;
+	padding: 0.5em 1em;
+	text-decoration: none;
+	background: #f7f7f7;
+	border-left: solid 6px #ff7c5c;
+	color: #ff7c5c;
+	font-weight: bold;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.29);
+}
+
+.submit1:active {
+	box-shadow: inset 0 0 2px rgba(128, 128, 128, 0.1);
+	transform: translateY(2px);
+}
+
+table.table2 {
+	margin-left: 850px;
+	text-align: center;
+}
+
+table.table3 {
+	width: 80%;
+	font-size: 100%;
+	text-align: center;
+	margin-left: 160px;
+	border: 0;
+	background: #EEFFFF;
+	border-top: solid 6px #1dc1d6;
+	box-shadow: 0 3px 4px rgba(0, 0, 0, 0.32);
+	border-spacing: 0;
+	line-height: 2em;
+	font-family: "游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", "メイリオ",
+		"Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+	font-weight: 500;
+}
+
+table.table3 td, table3 td {
+	padding: 10px 0;
+	text-align: center;
+}
+
+table.table3 tr:nth-child(even) {
+	background-color: #eee
+}
+
+#div1 {
+	font-size: 120%;
+	margin-left: 15%;
+	font-family: 'Noto Sans JP', sans-serif;
+	color: #777777;
+}
+
+#p1 {
+	margin-left: 50%;
+}
+</style>
+<title>入力コンソール</title>
 </head>
 <body>
-<jsp:include page="/WEB-INF/header.jsp"/>
-	<br>	<h4>人件費入力フォーム</h4>
-	<h4>今月の総人件費  ${thisMonthCost} 円</h4>
-	<br>※休憩時間は通常勤務時間から優先して控除します
-	<table border="1">
+	<header>
+		<jsp:include page="/WEB-INF/header.jsp" />
+	</header>
+	<br>
+	<h4>今月の総人件費 ${thisMonthCost} 円</h4>
+
+	<table class="table1">
 		<tr>
 			<th>ID</th>
 			<th>氏名</th>
@@ -30,7 +143,8 @@
 
 		<c:forEach var="cost" items="${employeeInfoList }">
 			<tr>
-				<form action="${pageContext.request.contextPath }/salarycalc" method="post">
+				<form action="${pageContext.request.contextPath }/salarycalc"
+					method="post">
 					<td><input type="hidden" name="name_id" value="${ cost.no }">${ cost.no }</td>
 					<td><input type="hidden" name="name" value="${ cost.no }">${ cost.name }</td>
 					<td><input type="date" name="date" required></td>
@@ -52,16 +166,16 @@
 						type="hidden" name="midnight" value="${ cost.midnight }">
 						<input type="hidden" name="holiday" value="${ cost.holiday }">
 						<input type="hidden" name="overtime" value="${ cost.overtime }">
-						<input type="submit" value="${ cost.name }"></td>
+						<input type="submit" value="${ cost.name }" class="submit1"></td>
 				</form>
 			</tr>
 		</c:forEach>
 	</table>
-	<br>
+	<h6>※休憩時間は通常勤務時間から優先して控除します</h6>
 
-		<%--深夜等　時給割増情報の確認表示 --%>
+	<%--深夜等　時給割増情報の確認表示 --%>
 
-	<table>
+	<table class="table2">
 		<tr>
 			<th>深夜勤務</th>
 			<th>休日勤務</th>
@@ -83,11 +197,13 @@
 	<%--出勤データ削除の為の検索ボタン(削除servletにpost送信)と今月分データの一覧表示 --%>
 
 	<br>
-	<br>今月期リスト一覧
+	<br>
+	<div id="div1">今月期リスト一覧</div>
 	<form action="${ pageContext.request.contextPath }/searchlaborcost"
 		method="post">
-		<p>
-			<label>検索・削除コンソール:<input type="month" name="search_month"></label>
+
+		<p id="p1">
+			<label>検索・削除コンソール: <input type="month" name="search_month"></label>
 			<select name="search_name">
 				<option value="0">名前を選択してください</option>
 				<c:forEach var="select_name" items="${ employeeInfoList }">
@@ -96,7 +212,7 @@
 			</select> <input type="submit" value="search">
 		</p>
 	</form>
-	<table border="1">
+	<table class="table3">
 		<tr>
 			<th>管理ID</th>
 			<th>日付</th>
@@ -112,7 +228,8 @@
 			<th>日額給与</th>
 		</tr>
 
-		<c:forEach var="cost" items="${ laborcostInfoList }" >
+		<c:forEach var="cost" items="${ laborcostInfoList }">
+			<%--休日出勤の場合は日付を赤色で表示します--%>
 			<tr>
 				<td>${ cost.id }</td>
 				<c:choose>
