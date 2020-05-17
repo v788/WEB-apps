@@ -26,6 +26,9 @@ public class FindTodayLaborCostServlet extends HttpServlet {
 			DataAccessBean dab = new DataAccessBean();
 			//laborcost_list(従業員出退勤入力画面)へBeanから一覧等リストオブジェクトを取得、送信
 
+			//折れ線グラフ用  月別総人件費表示オブジェクト
+			Collection<LaborcostInfo> everyMonthTotalList = dab.everyMonthTotalInfo();
+
 			//今月の給料総支払額検索結果のリストオブジェクト
 			int thisMonthCost = dab.thisMonthLaborCostInfo();
 
@@ -38,10 +41,16 @@ public class FindTodayLaborCostServlet extends HttpServlet {
 			//今月の従業員の出勤履リストオブジェクト
 			Collection<LaborcostInfo> alllaborcostInfoList = dab.attendanceList();
 
+			//折れ線グラフの縦軸を動的に決定するための月平均算出メソッド
+			int everyCostInfo = dab.everyCostInfo();
+
+
+			request.setAttribute("everyMonthTotalList", everyMonthTotalList);
 			request.setAttribute("thisMonthCost", thisMonthCost);
 			request.setAttribute("employeeInfoList", employeeInfoList);
 			request.setAttribute("extrasettingInfoList", extrasettingInfoList);
 			request.setAttribute("laborcostInfoList", alllaborcostInfoList);
+			request.setAttribute("everyCostInfo", everyCostInfo);
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/laborcost_list.jsp");
 			rd.forward(request, response);
 		} catch (SQLException e) {

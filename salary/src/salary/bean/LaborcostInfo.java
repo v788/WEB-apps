@@ -18,13 +18,13 @@ public class LaborcostInfo implements Serializable {
 		private String total_work;
 		private String overTimeWork;
 		private String attend;
-		private int thisMonth;
+		private String thisMonth;
 
-		public int getThisMonth() {
+		public String getThisMonth() {
 			return thisMonth;
 		}
-		public void setThisMonth(int thisMonth) {
-			this.thisMonth = thisMonth;
+		public void setThisMonth(String string) {
+			this.thisMonth = string;
 		}
 		public String getAttend() {
 			return attend;

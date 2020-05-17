@@ -353,7 +353,7 @@ public class DataAccessBean extends HttpServlet {
 		try {
 			String sql = "SELECT labor_cost.id, labor_cost.date, employee.name, labor_cost.hourly, labor_cost.attend, labor_cost.begin, labor_cost.finish, "
 					+ "labor_cost.rest, labor_cost.late, labor_cost.total_work,labor_cost.OverTimeWork, labor_cost.fare, labor_cost.total_cost "
-					+ "FROM labor_cost INNER JOIN employee ON labor_cost.name_id = employee.id WHERE DATE_FORMAT(date, '%Y%m') = DATE_FORMAT(NOW(), '%Y%m') ORDER BY labor_cost.id DESC";
+					+ "FROM labor_cost INNER JOIN employee ON labor_cost.name_id = employee.id WHERE DATE_FORMAT(date, '%Y%m') = DATE_FORMAT(NOW(), '%Y%m') ORDER BY labor_cost.date DESC";
 			Collection<LaborcostInfo> alllaborcostInfoList = new ArrayList<LaborcostInfo>();
 			conn = getDataSource().getConnection();
 			ps = conn.prepareStatement(sql);
@@ -518,6 +518,79 @@ public class DataAccessBean extends HttpServlet {
 					alllaborcostInfoList.add(slaborcostInfo);
 				}
 				return alllaborcostInfoList;
+			} catch (NamingException e) {
+				e.printStackTrace();
+				throw new SQLException(e);
+			} finally {
+				if (rs != null) {
+					rs.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			}
+		}
+
+
+
+		//折れ線グラフ用　月別総人件費表示オブジェクト
+		public Collection<LaborcostInfo> everyMonthTotalInfo() throws SQLException {
+
+			Connection conn = null;
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+
+			try {
+
+				//月別総人件費を算出するSQL文
+				String sql = "SELECT DATE_FORMAT(date, '%Y%m') as month_c,SUM(total_cost) as total_c from labor_cost group by DATE_FORMAT(date, '%Y%m')ORDER BY date ASC";
+				Collection<LaborcostInfo>everyMonthTotalInfoList = new ArrayList<LaborcostInfo>();
+				conn = getDataSource().getConnection();
+				ps = conn.prepareStatement(sql);
+				rs = ps.executeQuery();
+
+				while (rs.next()) {
+					LaborcostInfo everyMonthTotalInfo = new LaborcostInfo();
+
+					everyMonthTotalInfo.setDate(rs.getString("month_c"));
+					everyMonthTotalInfo.setTotal_cost(rs.getString("total_c"));
+
+					everyMonthTotalInfoList.add(everyMonthTotalInfo);
+				}
+				return everyMonthTotalInfoList;
+			} catch (NamingException e) {
+				e.printStackTrace();
+				throw new SQLException(e);
+			} finally {
+				if (rs != null) {
+					rs.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			}
+		}
+		//折れ線グラフの縦軸を動的に決定するための月平均算出メソッド
+		public int everyCostInfo() throws SQLException {
+
+			Connection conn = null;
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			int thisCost;
+			try {
+				String sql = "select avg(a.total_c) from (SELECT SUM(total_cost) as total_c from labor_cost group by DATE_FORMAT(date, '%Y%m')ORDER BY date ASC) as a";
+				conn = getDataSource().getConnection();
+				ps = conn.prepareStatement(sql);
+				rs = ps.executeQuery();
+				rs.next();
+				thisCost = rs.getInt("avg(a.total_c)");
+				return thisCost;
 			} catch (NamingException e) {
 				e.printStackTrace();
 				throw new SQLException(e);

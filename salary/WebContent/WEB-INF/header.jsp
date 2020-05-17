@@ -47,8 +47,8 @@ width:100%;
 <ul id="nav">
 		<li><a href="${ pageContext.request.contextPath }/findtodaylaborcost"><span class="home">HOME</span></a></li>
 		<li><a href="${ pageContext.request.contextPath }/employeefindall">アルバイトさん一覧</a></li>
-		<li><a href="${ pageContext.request.contextPath }/controlregist">従業員登録・割増設定</a></li>
-		<li><a href="${ pageContext.request.contextPath }/">説明書</a></li>
+		<li><a href="${ pageContext.request.contextPath }/controlregist">新人さん登録・割増設定</a></li>
+		<li><a href="${ pageContext.request.contextPath }/manual.jsp">説明書</a></li>
 	</ul>
 </body>
 </html>

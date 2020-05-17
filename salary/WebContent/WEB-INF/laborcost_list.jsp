@@ -11,7 +11,7 @@
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP');
 
 body {
-	font-family: 'Noto Sans JP', sans-serif;
+font-family: 'Noto Sans JP', sans-serif;
 }
 
 header {
@@ -116,7 +116,10 @@ table.table3 tr:nth-child(even) {
 #p1 {
 	margin-left: 50%;
 }
+
+
 </style>
+
 <title>入力コンソール</title>
 </head>
 <body>
@@ -124,7 +127,58 @@ table.table3 tr:nth-child(even) {
 		<jsp:include page="/WEB-INF/header.jsp" />
 	</header>
 	<br>
-	<h4>今月の総人件費 ${thisMonthCost} 円</h4>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+<%--現在～過去12か月分の線グラフの表示 --%>
+<div style="position:absolute; top:120px; left:110px; width:400px; height:400px;">
+  <canvas id="myLineChart"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+
+  <script>
+  var ctx = document.getElementById("myLineChart");
+  var myLineChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [<c:forEach var="a" items="${ everyMonthTotalList}" end="12">
+    	  '${a.date}'
+    	  , </c:forEach>
+    	  ],
+      datasets: [
+        {
+          label: '人件費',
+          data: [<c:forEach var="a" items="${ everyMonthTotalList}" end="12">
+          ${a.total_cost},</c:forEach>
+          ],
+          borderColor: "#00FF00",
+          backgroundColor: "rgba(0,0,0,0)"
+        }
+      ],
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'コストグラフ'
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            suggestedMax: ${everyCostInfo * 2},
+            suggestedMin: 0,
+            stepSize: 100000,
+            callback: function(value, index, values){
+              return  value +  '円'
+            }
+          }
+        }]
+      },
+    }
+  });
+  </script>
+</div>
+	<h4>今月の総人件費 <c:out value="${thisMonthCost}"/> 円</h4>
 
 	<table class="table1">
 		<tr>
@@ -160,10 +214,10 @@ table.table3 tr:nth-child(even) {
 					<td><input type="time" name="finish" required></td>
 					<td><input type="time" name="rest"></td>
 					<td><input type="hidden" name="hourlywage"
-						value="${cost. hourlywage}"> <input type="hidden"
-						name="sphourly" value="${ cost.sphourly }"> <input
-						type="hidden" name="carfare" value="${ cost.carfare }"> <input
-						type="hidden" name="midnight" value="${ cost.midnight }">
+						value="${cost. hourlywage}">
+					    <input type="hidden" name="sphourly" value="${ cost.sphourly }">
+						<input type="hidden" name="carfare" value="${ cost.carfare }">
+						<input type="hidden" name="midnight" value="${ cost.midnight }">
 						<input type="hidden" name="holiday" value="${ cost.holiday }">
 						<input type="hidden" name="overtime" value="${ cost.overtime }">
 						<input type="submit" value="${ cost.name }" class="submit1"></td>
@@ -171,6 +225,10 @@ table.table3 tr:nth-child(even) {
 			</tr>
 		</c:forEach>
 	</table>
+
+	<br>
+
+
 	<h6>※休憩時間は通常勤務時間から優先して控除します</h6>
 
 	<%--深夜等　時給割増情報の確認表示 --%>
@@ -203,9 +261,9 @@ table.table3 tr:nth-child(even) {
 		method="post">
 
 		<p id="p1">
-			<label>検索・削除コンソール: <input type="month" name="search_month"></label>
-			<select name="search_name">
-				<option value="0">名前を選択してください</option>
+			<label>検索・削除コンソール: <input type="month" name="search_month" required></label>
+			<select  name="search_name" required>
+				<option>名前を選択してください</option>
 				<c:forEach var="select_name" items="${ employeeInfoList }">
 					<option value="${ select_name.no }">${ select_name.name }</option>
 				</c:forEach>
