@@ -30,6 +30,46 @@ public class DataAccessBean extends HttpServlet {
 		return ds;
 	}
 
+	//ログイン情報の確認メソッド
+	//CheckLoginServletから受け取ったemailとpasswordで登録してあるユーザーネームをselectして返します
+	public String loginCheckInfo(LoginInfo loginInfo) throws SQLException {
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String User_name;
+		try {
+			String sql = "select user_name from users where email = ? and password = ?";
+
+			conn = getDataSource().getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, loginInfo.getEmail());
+			ps.setString(2, loginInfo.getPassword());
+			rs = ps.executeQuery();
+
+			if(rs.next()) {
+				User_name=rs.getString("user_name");
+
+				return User_name;
+			}else{
+				return null;
+			}
+		} catch (NamingException e) {
+			e.printStackTrace();
+			throw new SQLException(e);
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (ps != null) {
+				ps.close();
+			}
+			if (conn != null) {
+				conn.close();
+			}
+		}
+	}
+
 	//全アルバイト従業員の氏名、時給、交通費 ,特別時給の全件表示オブジェクトのコレクション
 	public Collection<EmployeeInfo> findallemployeeInfo() throws SQLException {
 
@@ -241,7 +281,6 @@ public class DataAccessBean extends HttpServlet {
 		}
 	}
 
-
 	//従業員の出勤・日当記録の削除処理
 	public void deleteLaborCostInfo(String id) throws SQLException {
 		Connection conn = null;
@@ -264,6 +303,7 @@ public class DataAccessBean extends HttpServlet {
 			}
 		}
 	}
+
 	//従業員の出勤・時給入力フォーム表示処理
 	public Collection<EmployeeInfo> findallLaborCostInfo() throws SQLException {
 
@@ -308,7 +348,6 @@ public class DataAccessBean extends HttpServlet {
 			}
 		}
 	}
-
 
 	//当月間総人件費表示オブジェクト
 	public int thisMonthLaborCostInfo() throws SQLException {
@@ -436,176 +475,173 @@ public class DataAccessBean extends HttpServlet {
 		}
 	}
 
-
 	//検索用従業員出勤リスト表示オブジェクト
-		public Collection<LaborcostInfo> searchLaborCostInfo(LaborcostInfo laborcostInfo) throws SQLException {
+	public Collection<LaborcostInfo> searchLaborCostInfo(LaborcostInfo laborcostInfo) throws SQLException {
 
-			Connection conn = null;
-			PreparedStatement ps = null;
-			ResultSet rs = null;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 
-			try {
-				String sql = "SELECT cost.id, cost.date, employee.name, cost.hourly, cost.attend, cost.begin, cost.finish, "
-						+ "cost.rest, cost.late, cost.total_work,cost.OverTimeWork, cost.fare, cost.total_cost "
-						+ "FROM labor_cost as cost INNER JOIN employee ON cost.name_id = employee.id WHERE cost.date like ? "
-						+ "AND cost.name_id = ? ORDER BY cost.date DESC";
-				Collection<LaborcostInfo> alllaborcostInfoList = new ArrayList<LaborcostInfo>();
-				conn = getDataSource().getConnection();
-				ps = conn.prepareStatement(sql);
-				ps.setString(1, "%" + laborcostInfo.getDate() + "%");
-				ps.setString(2, laborcostInfo.getName_id());
-				rs = ps.executeQuery();
+		try {
+			String sql = "SELECT cost.id, cost.date, employee.name, cost.hourly, cost.attend, cost.begin, cost.finish, "
+					+ "cost.rest, cost.late, cost.total_work,cost.OverTimeWork, cost.fare, cost.total_cost "
+					+ "FROM labor_cost as cost INNER JOIN employee ON cost.name_id = employee.id WHERE cost.date like ? "
+					+ "AND cost.name_id = ? ORDER BY cost.date DESC";
+			Collection<LaborcostInfo> alllaborcostInfoList = new ArrayList<LaborcostInfo>();
+			conn = getDataSource().getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, "%" + laborcostInfo.getDate() + "%");
+			ps.setString(2, laborcostInfo.getName_id());
+			rs = ps.executeQuery();
 
-				while (rs.next()) {
-					LaborcostInfo slaborcostInfo = new LaborcostInfo();
-					slaborcostInfo.setId(rs.getString("id"));
-					slaborcostInfo.setDate(rs.getString("date"));
-					slaborcostInfo.setName(rs.getString("name"));
-					slaborcostInfo.setHourly(rs.getString("hourly"));
-					slaborcostInfo.setBegin(rs.getString("begin"));
-					slaborcostInfo.setFinish(rs.getString("finish"));
-					slaborcostInfo.setRest(rs.getString("rest"));
-					slaborcostInfo.setLate(rs.getString("late"));
-					slaborcostInfo.setTotal_work(rs.getString("total_work"));
-					slaborcostInfo.setOverTimeWork(rs.getString("OverTimeWork"));
-					slaborcostInfo.setFare(rs.getString("fare"));
-					slaborcostInfo.setTotal_cost(rs.getString("total_cost"));
-					slaborcostInfo.setAttend(rs.getString("attend"));
+			while (rs.next()) {
+				LaborcostInfo slaborcostInfo = new LaborcostInfo();
+				slaborcostInfo.setId(rs.getString("id"));
+				slaborcostInfo.setDate(rs.getString("date"));
+				slaborcostInfo.setName(rs.getString("name"));
+				slaborcostInfo.setHourly(rs.getString("hourly"));
+				slaborcostInfo.setBegin(rs.getString("begin"));
+				slaborcostInfo.setFinish(rs.getString("finish"));
+				slaborcostInfo.setRest(rs.getString("rest"));
+				slaborcostInfo.setLate(rs.getString("late"));
+				slaborcostInfo.setTotal_work(rs.getString("total_work"));
+				slaborcostInfo.setOverTimeWork(rs.getString("OverTimeWork"));
+				slaborcostInfo.setFare(rs.getString("fare"));
+				slaborcostInfo.setTotal_cost(rs.getString("total_cost"));
+				slaborcostInfo.setAttend(rs.getString("attend"));
 
-					alllaborcostInfoList.add(slaborcostInfo);
-				}
-				return alllaborcostInfoList;
-			} catch (NamingException e) {
-				e.printStackTrace();
-				throw new SQLException(e);
-			} finally {
-				if (rs != null) {
-					rs.close();
-				}
-				if (ps != null) {
-					ps.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
+				alllaborcostInfoList.add(slaborcostInfo);
 			}
-
-		}
-
-
-		//個人別検索月間人件費表示オブジェクト
-		public Collection<LaborcostInfo> personalMonthLaborCostInfo(LaborcostInfo laborcostInfo) throws SQLException {
-
-			Connection conn = null;
-			PreparedStatement ps = null;
-			ResultSet rs = null;
-
-			try {
-				String sql = "SELECT SUM(cost.total_cost), employee.name FROM labor_cost as cost INNER JOIN employee ON cost.name_id = employee.id  WHERE cost.date like ? AND cost.name_id = ?";
-				Collection<LaborcostInfo> alllaborcostInfoList = new ArrayList<LaborcostInfo>();
-				conn = getDataSource().getConnection();
-				ps = conn.prepareStatement(sql);
-				ps.setString(1, "%" + laborcostInfo.getDate() + "%" );
-				ps.setString(2,laborcostInfo.getName_id() );
-				rs = ps.executeQuery();
-
-				while (rs.next()) {
-					LaborcostInfo slaborcostInfo = new LaborcostInfo();
-
-					slaborcostInfo.setName(rs.getString("name"));
-					slaborcostInfo.setTotal_cost(rs.getString("SUM(cost.total_cost)"));
-
-					alllaborcostInfoList.add(slaborcostInfo);
-				}
-				return alllaborcostInfoList;
-			} catch (NamingException e) {
-				e.printStackTrace();
-				throw new SQLException(e);
-			} finally {
-				if (rs != null) {
-					rs.close();
-				}
-				if (ps != null) {
-					ps.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
+			return alllaborcostInfoList;
+		} catch (NamingException e) {
+			e.printStackTrace();
+			throw new SQLException(e);
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (ps != null) {
+				ps.close();
+			}
+			if (conn != null) {
+				conn.close();
 			}
 		}
 
+	}
 
+	//個人別検索月間人件費表示オブジェクト
+	public Collection<LaborcostInfo> personalMonthLaborCostInfo(LaborcostInfo laborcostInfo) throws SQLException {
 
-		//折れ線グラフ用　月別総人件費表示オブジェクト
-		public Collection<LaborcostInfo> everyMonthTotalInfo() throws SQLException {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 
-			Connection conn = null;
-			PreparedStatement ps = null;
-			ResultSet rs = null;
+		try {
+			String sql = "SELECT SUM(cost.total_cost), employee.name FROM labor_cost as cost INNER JOIN employee ON cost.name_id = employee.id  WHERE cost.date like ? AND cost.name_id = ?";
+			Collection<LaborcostInfo> alllaborcostInfoList = new ArrayList<LaborcostInfo>();
+			conn = getDataSource().getConnection();
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, "%" + laborcostInfo.getDate() + "%");
+			ps.setString(2, laborcostInfo.getName_id());
+			rs = ps.executeQuery();
 
-			try {
+			while (rs.next()) {
+				LaborcostInfo slaborcostInfo = new LaborcostInfo();
 
-				//月別総人件費を算出するSQL文
-				String sql = "SELECT DATE_FORMAT(date, '%Y%m') as month_c,SUM(total_cost) as total_c from labor_cost group by DATE_FORMAT(date, '%Y%m')ORDER BY date ASC";
-				Collection<LaborcostInfo>everyMonthTotalInfoList = new ArrayList<LaborcostInfo>();
-				conn = getDataSource().getConnection();
-				ps = conn.prepareStatement(sql);
-				rs = ps.executeQuery();
+				slaborcostInfo.setName(rs.getString("name"));
+				slaborcostInfo.setTotal_cost(rs.getString("SUM(cost.total_cost)"));
 
-				while (rs.next()) {
-					LaborcostInfo everyMonthTotalInfo = new LaborcostInfo();
-
-					everyMonthTotalInfo.setDate(rs.getString("month_c"));
-					everyMonthTotalInfo.setTotal_cost(rs.getString("total_c"));
-
-					everyMonthTotalInfoList.add(everyMonthTotalInfo);
-				}
-				return everyMonthTotalInfoList;
-			} catch (NamingException e) {
-				e.printStackTrace();
-				throw new SQLException(e);
-			} finally {
-				if (rs != null) {
-					rs.close();
-				}
-				if (ps != null) {
-					ps.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
+				alllaborcostInfoList.add(slaborcostInfo);
+			}
+			return alllaborcostInfoList;
+		} catch (NamingException e) {
+			e.printStackTrace();
+			throw new SQLException(e);
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (ps != null) {
+				ps.close();
+			}
+			if (conn != null) {
+				conn.close();
 			}
 		}
-		//折れ線グラフの縦軸を動的に決定するための月平均算出メソッド
-		public int everyCostInfo() throws SQLException {
+	}
 
-			Connection conn = null;
-			PreparedStatement ps = null;
-			ResultSet rs = null;
-			int thisCost;
-			try {
-				String sql = "select avg(a.total_c) from (SELECT SUM(total_cost) as total_c from labor_cost group by DATE_FORMAT(date, '%Y%m')ORDER BY date ASC) as a";
-				conn = getDataSource().getConnection();
-				ps = conn.prepareStatement(sql);
-				rs = ps.executeQuery();
-				rs.next();
-				thisCost = rs.getInt("avg(a.total_c)");
-				return thisCost;
-			} catch (NamingException e) {
-				e.printStackTrace();
-				throw new SQLException(e);
-			} finally {
-				if (rs != null) {
-					rs.close();
-				}
-				if (ps != null) {
-					ps.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
+	//折れ線グラフ用　月別総人件費表示オブジェクト
+	public Collection<LaborcostInfo> everyMonthTotalInfo() throws SQLException {
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+
+			//月別総人件費を算出するSQL文
+			String sql = "SELECT DATE_FORMAT(date, '%Y%m') as month_c,SUM(total_cost) as total_c from labor_cost group by DATE_FORMAT(date, '%Y%m')ORDER BY date ASC";
+			Collection<LaborcostInfo> everyMonthTotalInfoList = new ArrayList<LaborcostInfo>();
+			conn = getDataSource().getConnection();
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				LaborcostInfo everyMonthTotalInfo = new LaborcostInfo();
+
+				everyMonthTotalInfo.setDate(rs.getString("month_c"));
+				everyMonthTotalInfo.setTotal_cost(rs.getString("total_c"));
+
+				everyMonthTotalInfoList.add(everyMonthTotalInfo);
 			}
-
+			return everyMonthTotalInfoList;
+		} catch (NamingException e) {
+			e.printStackTrace();
+			throw new SQLException(e);
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (ps != null) {
+				ps.close();
+			}
+			if (conn != null) {
+				conn.close();
+			}
 		}
+	}
+
+	//折れ線グラフの縦軸を動的に決定するための月平均算出メソッド
+	public int everyCostInfo() throws SQLException {
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int thisCost;
+		try {
+			String sql = "select avg(a.total_c) from (SELECT SUM(total_cost) as total_c from labor_cost group by DATE_FORMAT(date, '%Y%m')ORDER BY date ASC) as a";
+			conn = getDataSource().getConnection();
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			rs.next();
+			thisCost = rs.getInt("avg(a.total_c)");
+			return thisCost;
+		} catch (NamingException e) {
+			e.printStackTrace();
+			throw new SQLException(e);
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (ps != null) {
+				ps.close();
+			}
+			if (conn != null) {
+				conn.close();
+			}
+		}
+
+	}
 
 }

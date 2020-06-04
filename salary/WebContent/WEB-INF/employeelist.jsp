@@ -88,11 +88,11 @@ table.table2 {
 				<td height="25"></td>
 				<c:forEach var="employeeInfo" items="${ employeeInfoList }">
 					<tr>
-						<td align="center">${ employeeInfo.no }</td>
-						<td>${ employeeInfo.name }</td>
-						<td align="right">${ employeeInfo.hourlywage }
-						<td align="right">${ employeeInfo.carfare }</td>
-						<td align="right">${ employeeInfo.sphourly }</td>
+						<td align="center"><c:out value="${ employeeInfo.no }"/></td>
+						<td><c:out value="${ employeeInfo.name }"/></td>
+						<td align="right"><c:out value="${ employeeInfo.hourlywage }"/></td>
+						<td align="right"><c:out value="${ employeeInfo.carfare }"/></td>
+						<td align="right"><c:out value="${ employeeInfo.sphourly }"/></td>
 					</tr>
 				</c:forEach>
 			</table>

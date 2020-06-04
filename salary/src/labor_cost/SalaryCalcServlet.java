@@ -58,6 +58,11 @@ public class SalaryCalcServlet extends HttpServlet {
 				float overtime     :  残業時間の割増率
 				int carfare        :  日額交通費
 				*/
+				//休憩時間が未入力の場合は00:00とします。
+				if(rest == null) {
+					rest = "00:00:00";
+				}
+
 				//時給の選択(基本時給もしくは特別時給)
 				int pay;
 				if (hourly == 1) {
@@ -208,9 +213,6 @@ public class SalaryCalcServlet extends HttpServlet {
 				//日当総額の算出(基本給+深夜給+残業給に休日出勤の場合は休日割増をかけて交通費を加算)
 				salaryPay = (int) ((basicPay + nightPay + overPay) * attending + carfare);
 
-
-				System.out.println(workTime + "  " + dayTime_work + " " + nightTime_work + "  " + day_stay);
-				System.out.println(basicPay + "  " + nightPay + " " + overPay + "  " + attend_);
 
 
 				//上記時間表記(String)変換メソッドを使って勤務時間、勤務時間、深夜勤務時間を変換

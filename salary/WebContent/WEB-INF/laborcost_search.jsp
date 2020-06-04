@@ -75,18 +75,18 @@ font-family: 'M PLUS Rounded 1c', sans-serif;
 		</tr>
 		<c:forEach var="result" items="${ searchCostInfoList }" end="350">
 			<tr>
-				<td>${ result.id }</td>
-				<td>${ result.date }</td>
-				<td id="name">${ result.name }</td>
-				<td>${ result.hourly }</td>
-				<td>${ result.begin }</td>
-				<td>${ result.finish }</td>
-				<td>${ result.rest }</td>
-				<td>${ result.total_work }</td>
-				<td>${ result.late }</td>
-				<td>${ result.overTimeWork }</td>
-				<td>${ result.fare }</td>
-				<td>${ result.total_cost}</td>
+				<td><c:out value="${ result.id }"/></td>
+				<td><c:out value="${ result.date }"/></td>
+				<td id="name"><c:out value="${ result.name }"/></td>
+				<td><c:out value="${ result.hourly }"/></td>
+				<td><c:out value="${ result.begin }"/></td>
+				<td><c:out value="${ result.finish }"/></td>
+				<td><c:out value="${ result.rest }"/></td>
+				<td><c:out value="${ result.total_work }"/></td>
+				<td><c:out value="${ result.late }"/></td>
+				<td><c:out value="${ result.overTimeWork }"/></td>
+				<td><c:out value="${ result.fare }"/></td>
+				<td><c:out value="${ result.total_cost}"/></td>
 				<td><form
 						action="${ pageContext.request.contextPath }/deletelaborcost"
 						method="post">

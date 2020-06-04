@@ -21,12 +21,13 @@ public class ControlRegistServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		try {
-			DataAccessBean dab = new DataAccessBean();
+;			DataAccessBean dab = new DataAccessBean();
 
 			Collection<EmployeeInfo> employeeInfoList = dab.findallemployeeInfo();
 			Collection<ExtrasettingInfo> extrasettingInfoList = dab.extrasettingInfo();
 			request.setAttribute("employeeInfoList", employeeInfoList);
 			request.setAttribute("extra", extrasettingInfoList);
+
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/employee_regist.jsp");
 			rd.forward(request, response);
 		} catch (SQLException e) {

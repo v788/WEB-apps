@@ -116,11 +116,11 @@ table.table3 tr:nth-child(even) {
 #p1 {
 	margin-left: 50%;
 }
-
-
+a{
+}
 </style>
 
-<title>入力コンソール</title>
+<title>Home</title>
 </head>
 <body>
 	<header>
@@ -133,9 +133,9 @@ table.table3 tr:nth-child(even) {
 	<br>
 	<br>
 <%--現在～過去12か月分の線グラフの表示 --%>
-<div style="position:absolute; top:120px; left:110px; width:400px; height:400px;">
+<a style="position:absolute; top:120px; left:110px; width:350px; height:450px;">
   <canvas id="myLineChart"></canvas>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
 
   <script>
   var ctx = document.getElementById("myLineChart");
@@ -160,7 +160,7 @@ table.table3 tr:nth-child(even) {
     options: {
       title: {
         display: true,
-        text: 'コストグラフ'
+
       },
       scales: {
         yAxes: [{
@@ -177,7 +177,8 @@ table.table3 tr:nth-child(even) {
     }
   });
   </script>
-</div>
+
+</a>
 	<h4>今月の総人件費 <c:out value="${thisMonthCost}"/> 円</h4>
 
 	<table class="table1">
@@ -199,8 +200,8 @@ table.table3 tr:nth-child(even) {
 			<tr>
 				<form action="${pageContext.request.contextPath }/salarycalc"
 					method="post">
-					<td><input type="hidden" name="name_id" value="${ cost.no }">${ cost.no }</td>
-					<td><input type="hidden" name="name" value="${ cost.no }">${ cost.name }</td>
+					<td><input type="hidden" name="name_id" value="${ cost.no }"><c:out value="${ cost.no }"/></td>
+					<td><input type="hidden" name="name" value="${ cost.no }"><c:out value="${ cost.name }"/></td>
 					<td><input type="date" name="date" required></td>
 					<td><select name="hourly">
 							<option value="1" selected>基本時給</option>
@@ -212,7 +213,7 @@ table.table3 tr:nth-child(even) {
 					</select></td>
 					<td><input type="time" name="begin" required></td>
 					<td><input type="time" name="finish" required></td>
-					<td><input type="time" name="rest"></td>
+					<td><input type="time" name="rest" value="00:00"></td>
 					<td><input type="hidden" name="hourlywage"
 						value="${cost. hourlywage}">
 					    <input type="hidden" name="sphourly" value="${ cost.sphourly }">
@@ -242,11 +243,11 @@ table.table3 tr:nth-child(even) {
 		<tr>
 			<c:forEach var="ex" items="${ extrasettingInfoList }">
 				<td><input type="hidden" value="${ ex.midnight }"
-					name="ex.midnight">${ ex.midnight }%</td>
+					name="ex.midnight"><c:out value="${ ex.midnight }"/>%</td>
 				<td><input type="hidden" value="${ ex.holiday }"
-					name="ex.holiday">${ ex.holiday }%</td>
+					name="ex.holiday"><c:out value="${ ex.holiday }"/>%</td>
 				<td><input type="hidden" value="${ ex.overtime }"
-					name="ex.overtime">${ ex.overtime }%</td>
+					name="ex.overtime"><c:out value="${ ex.overtime }"/>%</td>
 			</c:forEach>
 		</tr>
 	</table>
@@ -265,7 +266,7 @@ table.table3 tr:nth-child(even) {
 			<select  name="search_name" required>
 				<option>名前を選択してください</option>
 				<c:forEach var="select_name" items="${ employeeInfoList }">
-					<option value="${ select_name.no }">${ select_name.name }</option>
+					<option value="${ select_name.no }"><c:out value="${ select_name.name }"/></option>
 				</c:forEach>
 			</select> <input type="submit" value="search">
 		</p>
@@ -289,25 +290,25 @@ table.table3 tr:nth-child(even) {
 		<c:forEach var="cost" items="${ laborcostInfoList }">
 			<%--休日出勤の場合は日付を赤色で表示します--%>
 			<tr>
-				<td>${ cost.id }</td>
+				<td><c:out value="${ cost.id }"/></td>
 				<c:choose>
 					<c:when test="${cost.attend eq '2'}">
-						<td><span style="color: fuchsia;">${ cost.date }</span></td>
+						<td><span style="color: fuchsia;"><c:out value="${ cost.date }"/></span></td>
 					</c:when>
 					<c:otherwise>
-						<td>${ cost.date }</td>
+						<td><c:out value="${ cost.date }"/></td>
 					</c:otherwise>
 				</c:choose>
-				<td>${ cost.name }</td>
-				<td>${ cost.hourly }</td>
-				<td>${ cost.begin }</td>
-				<td>${ cost.finish }</td>
-				<td>${ cost.rest }</td>
-				<td>${ cost.total_work }</td>
-				<td>${ cost.late }</td>
-				<td>${ cost.overTimeWork }</td>
-				<td>${ cost.fare }</td>
-				<td>${ cost.total_cost}</td>
+				<td><c:out value="${ cost.name }"/></td>
+				<td><c:out value="${ cost.hourly }"/></td>
+				<td><c:out value="${ cost.begin }"/></td>
+				<td><c:out value="${ cost.finish }"/></td>
+				<td><c:out value="${ cost.rest }"/></td>
+				<td><c:out value="${ cost.total_work }"/></td>
+				<td><c:out value="${ cost.late }"/></td>
+				<td><c:out value="${ cost.overTimeWork }"/></td>
+				<td><c:out value="${ cost.fare }"/></td>
+				<td><c:out value="${ cost.total_cost}"/></td>
 			</tr>
 		</c:forEach>
 	</table>

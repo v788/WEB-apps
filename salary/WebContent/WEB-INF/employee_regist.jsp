@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta http-equiv="Content-Type" charset="UTF-8">
 <title>登録・修正・削除</title>
 <style type="text/css">
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP');
@@ -106,17 +106,17 @@ table.table3 tr:nth-child(even) {
 					</tr>
 					<tr>
 						<td>基本時給</td>
-						<td><input type="text" name="hourlywage" required></td>
+						<td><input type="number" name="hourlywage" required></td>
 						<td></td>
 					</tr>
 					<tr>
 						<td>交通費</td>
-						<td><input type="text" name="carfare"></td>
+						<td><input type="number" name="carfare"></td>
 						<td></td>
 					</tr>
 					<tr>
 						<td>特別時給</td>
-						<td><input type="text" name="sphourly"></td>
+						<td><input type="number" name="sphourly"></td>
 						<td><input type="submit" value="登録" /></td>
 					</tr>
 				</table>
@@ -175,26 +175,22 @@ table.table3 tr:nth-child(even) {
 
 		<c:forEach var="employeeInfo" items="${ employeeInfoList }">
 			<tr>
-				<form action="${ pageContext.request.contextPath }/updateregist"
-					id="update">
+				<form action="${ pageContext.request.contextPath }/updateregist" method="post">
 					<td><input type="hidden" name="no"
-						value="${ employeeInfo.no }" form="update">${ employeeInfo.no }</td>
+						value="${ employeeInfo.no }" ><c:out value="${ employeeInfo.no }"/></td>
 					<td><input type="text" name="name"
-						value="${ employeeInfo.name }" required form="update" size="12"></td>
+						value="${ employeeInfo.name }" required size="12"></td>
 					<td align="right"><input type="text" name="hourlywage"
-						size="10" value="${ employeeInfo.hourlywage }" required
-						form="update"></td>
+						size="10" value="${ employeeInfo.hourlywage }" required></td>
 					<td align="right"><input type="text" name="carfare" size="10"
-						value="${ employeeInfo.carfare }" form="update"></td>
+						value="${ employeeInfo.carfare }"></td>
 					<td align="right"><input type="text" name="sphourly" size="10"
-						value="${ employeeInfo.sphourly }" form="update"></td>
-					<td><input type="submit" value="修正" form="update"></td>
+						value="${ employeeInfo.sphourly }"></td>
+					<td><input type="submit" value="修正"></td>
 				</form>
-				<td><form action="${ pageContext.request.contextPath }/delete"
-						method="post" id="delete">
-						<input type="hidden" name="delete" id="delete"
-							value="${ employeeInfo.no }" /> <input type="submit" value="削除"
-							form="delete">
+				<td><form action="${ pageContext.request.contextPath }/delete" method="post">
+						<input type="hidden" name="delete" value="${ employeeInfo.no }" />
+						<input type="submit" value="削除">
 					</form></td>
 			</tr>
 		</c:forEach>

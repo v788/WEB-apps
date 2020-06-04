@@ -25,13 +25,14 @@ public class EmployeeRegistServlet extends HttpServlet {
 			String carfare = request.getParameter("carfare");
 			String sphourly = request.getParameter("sphourly");
 
-			if(name.length() < 2) {
-				request.setAttribute("message1", "名前を確認して下さい");
+			if(name.length() < 2 || name.length() > 15) {
+				request.setAttribute("message1", "名前は3文字から入力できます");
 				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/employee_regist.jsp");
 				rd.forward(request, response);
 			}
+
 			if(hourlywage.length() < 2 || hourlywage.length() > 9999) {
-				request.setAttribute("message1", "金額を確認してください");
+				request.setAttribute("message1", "入力金額を確認してください");
 				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/employee_regist.jsp");
 				rd.forward(request, response);
 			}
