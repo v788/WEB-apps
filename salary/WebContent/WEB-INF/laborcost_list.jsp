@@ -11,7 +11,7 @@
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP');
 
 body {
-font-family: 'Noto Sans JP', sans-serif;
+	font-family: 'Noto Sans JP', sans-serif;
 }
 
 header {
@@ -116,7 +116,9 @@ table.table3 tr:nth-child(even) {
 #p1 {
 	margin-left: 50%;
 }
-a{
+
+a {
+
 }
 </style>
 
@@ -132,12 +134,13 @@ a{
 	<br>
 	<br>
 	<br>
-<%--現在～過去12か月分の線グラフの表示 --%>
-<a style="position:absolute; top:120px; left:110px; width:350px; height:450px;">
-  <canvas id="myLineChart"></canvas>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+	<%--現在～過去12か月分の線グラフの表示 --%>
+	<a
+		style="position: absolute; top: 120px; left: 110px; width: 350px; height: 450px;">
+		<canvas id="myLineChart"></canvas> <script
+			src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
 
-  <script>
+		<script>
   var ctx = document.getElementById("myLineChart");
   var myLineChart = new Chart(ctx, {
     type: 'line',
@@ -178,8 +181,12 @@ a{
   });
   </script>
 
-</a>
-	<h4>今月の総人件費 <c:out value="${thisMonthCost}"/> 円</h4>
+	</a>
+	<h4>
+		今月の総人件費
+		<c:out value="${thisMonthCost}" />
+		円
+	</h4>
 
 	<table class="table1">
 		<tr>
@@ -200,8 +207,10 @@ a{
 			<tr>
 				<form action="${pageContext.request.contextPath }/salarycalc"
 					method="post">
-					<td><input type="hidden" name="name_id" value="${ cost.no }"><c:out value="${ cost.no }"/></td>
-					<td><input type="hidden" name="name" value="${ cost.no }"><c:out value="${ cost.name }"/></td>
+					<td><input type="hidden" name="name_id" value="${ cost.no }">
+						<c:out value="${ cost.no }" /></td>
+					<td><input type="hidden" name="name" value="${ cost.no }">
+						<c:out value="${ cost.name }" /></td>
 					<td><input type="date" name="date" required></td>
 					<td><select name="hourly">
 							<option value="1" selected>基本時給</option>
@@ -215,10 +224,10 @@ a{
 					<td><input type="time" name="finish" required></td>
 					<td><input type="time" name="rest" value="00:00"></td>
 					<td><input type="hidden" name="hourlywage"
-						value="${cost. hourlywage}">
-					    <input type="hidden" name="sphourly" value="${ cost.sphourly }">
-						<input type="hidden" name="carfare" value="${ cost.carfare }">
-						<input type="hidden" name="midnight" value="${ cost.midnight }">
+						value="${cost. hourlywage}"> <input type="hidden"
+						name="sphourly" value="${ cost.sphourly }"> <input
+						type="hidden" name="carfare" value="${ cost.carfare }"> <input
+						type="hidden" name="midnight" value="${ cost.midnight }">
 						<input type="hidden" name="holiday" value="${ cost.holiday }">
 						<input type="hidden" name="overtime" value="${ cost.overtime }">
 						<input type="submit" value="${ cost.name }" class="submit1"></td>
@@ -243,11 +252,11 @@ a{
 		<tr>
 			<c:forEach var="ex" items="${ extrasettingInfoList }">
 				<td><input type="hidden" value="${ ex.midnight }"
-					name="ex.midnight"><c:out value="${ ex.midnight }"/>%</td>
+					name="ex.midnight"> <c:out value="${ ex.midnight }" />%</td>
 				<td><input type="hidden" value="${ ex.holiday }"
-					name="ex.holiday"><c:out value="${ ex.holiday }"/>%</td>
+					name="ex.holiday"> <c:out value="${ ex.holiday }" />%</td>
 				<td><input type="hidden" value="${ ex.overtime }"
-					name="ex.overtime"><c:out value="${ ex.overtime }"/>%</td>
+					name="ex.overtime"> <c:out value="${ ex.overtime }" />%</td>
 			</c:forEach>
 		</tr>
 	</table>
@@ -262,11 +271,12 @@ a{
 		method="post">
 
 		<p id="p1">
-			<label>検索・削除コンソール: <input type="month" name="search_month" required></label>
-			<select  name="search_name" required>
+			<label>検索・削除コンソール: <input type="month" name="search_month"
+				required></label> <select name="search_name" required>
 				<option>名前を選択してください</option>
 				<c:forEach var="select_name" items="${ employeeInfoList }">
-					<option value="${ select_name.no }"><c:out value="${ select_name.name }"/></option>
+					<option value="${ select_name.no }"><c:out
+							value="${ select_name.name }" /></option>
 				</c:forEach>
 			</select> <input type="submit" value="search">
 		</p>
@@ -290,25 +300,26 @@ a{
 		<c:forEach var="cost" items="${ laborcostInfoList }">
 			<%--休日出勤の場合は日付を赤色で表示します--%>
 			<tr>
-				<td><c:out value="${ cost.id }"/></td>
+				<td><c:out value="${ cost.id }" /></td>
 				<c:choose>
 					<c:when test="${cost.attend eq '2'}">
-						<td><span style="color: fuchsia;"><c:out value="${ cost.date }"/></span></td>
+						<td><span style="color: fuchsia;"><c:out
+									value="${ cost.date }" /></span></td>
 					</c:when>
 					<c:otherwise>
-						<td><c:out value="${ cost.date }"/></td>
+						<td><c:out value="${ cost.date }" /></td>
 					</c:otherwise>
 				</c:choose>
-				<td><c:out value="${ cost.name }"/></td>
-				<td><c:out value="${ cost.hourly }"/></td>
-				<td><c:out value="${ cost.begin }"/></td>
-				<td><c:out value="${ cost.finish }"/></td>
-				<td><c:out value="${ cost.rest }"/></td>
-				<td><c:out value="${ cost.total_work }"/></td>
-				<td><c:out value="${ cost.late }"/></td>
-				<td><c:out value="${ cost.overTimeWork }"/></td>
-				<td><c:out value="${ cost.fare }"/></td>
-				<td><c:out value="${ cost.total_cost}"/></td>
+				<td><c:out value="${ cost.name }" /></td>
+				<td><c:out value="${ cost.hourly }" /></td>
+				<td><c:out value="${ cost.begin }" /></td>
+				<td><c:out value="${ cost.finish }" /></td>
+				<td><c:out value="${ cost.rest }" /></td>
+				<td><c:out value="${ cost.total_work }" /></td>
+				<td><c:out value="${ cost.late }" /></td>
+				<td><c:out value="${ cost.overTimeWork }" /></td>
+				<td><c:out value="${ cost.fare }" /></td>
+				<td><c:out value="${ cost.total_cost}" /></td>
 			</tr>
 		</c:forEach>
 	</table>

@@ -11,7 +11,6 @@
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP');
 
 body {
-
 	font-family: 'Noto Sans JP', sans-serif;
 }
 
@@ -76,16 +75,21 @@ table.table3 {
 	box-shadow: 0 3px 4px rgba(0, 0, 0, 0.32);
 	justify-content: space-around;
 }
+
 table.table3 td, table2 td {
 	padding: 7px 0;
 	text-align: center;
 }
+
 table.table3 tr:nth-child(even) {
 	background-color: #EEEEEE;
 }
 </style>
 </head>
 <body>
+
+	<%--このjspで従業員の新規登録、修正、削除、割増率設定をします --%>
+
 	<jsp:include page="/WEB-INF/header.jsp" />
 	<div id="employee">
 		<div>
@@ -125,8 +129,8 @@ table.table3 tr:nth-child(even) {
 		<br>
 
 		<div>
-		<br>
-		<br>
+			<br>
+			<%--割増率の設定入力（既存の入力値を表示しておきます） --%>
 			<h5>割増率変更</h5>
 			<table id="table2">
 				<c:forEach var="ex" items="${extra}">
@@ -157,10 +161,12 @@ table.table3 tr:nth-child(even) {
 		</div>
 	</div>
 
-<br>
-<br>
-<br>
+	<br>
+	<br>
+	<br>
 	<h5>
+
+		<%--従業員の修正、削除フォーム(既存の値を表示しておきます) --%>
 		修正・削除フォーム
 		<c:out value="${ message2 }" />
 	</h5>
@@ -173,11 +179,16 @@ table.table3 tr:nth-child(even) {
 			<td>特別時給</td>
 		</tr>
 
+
+		<%--UpdateRegistServsletで入力内容のチェックをします --%>
 		<c:forEach var="employeeInfo" items="${ employeeInfoList }">
 			<tr>
-				<form action="${ pageContext.request.contextPath }/updateregist" method="post">
+				<form action="${ pageContext.request.contextPath }/updateregist"
+					method="post">
+
 					<td><input type="hidden" name="no"
-						value="${ employeeInfo.no }" ><c:out value="${ employeeInfo.no }"/></td>
+						value="${ employeeInfo.no }"> <c:out
+							value="${ employeeInfo.no }" /></td>
 					<td><input type="text" name="name"
 						value="${ employeeInfo.name }" required size="12"></td>
 					<td align="right"><input type="text" name="hourlywage"
@@ -188,23 +199,16 @@ table.table3 tr:nth-child(even) {
 						value="${ employeeInfo.sphourly }"></td>
 					<td><input type="submit" value="修正"></td>
 				</form>
-				<td><form action="${ pageContext.request.contextPath }/delete" method="post">
+
+				<%--消去ボタンの設定(従業員IDを元にデータベースで消去します) --%>
+				<td><form action="${ pageContext.request.contextPath }/delete"
+						method="post">
 						<input type="hidden" name="delete" value="${ employeeInfo.no }" />
 						<input type="submit" value="削除">
 					</form></td>
 			</tr>
 		</c:forEach>
 	</table>
-	<script type="text/javascript">
-		function check() {
-			if (window.comfirm('削除してもよろしいですか？')) {
-				return true;
-			} else {
-				window.alert('キャンセルしました');
-				return false;
-			}
-		}
-	</script>
 </body>
 </html>
 
